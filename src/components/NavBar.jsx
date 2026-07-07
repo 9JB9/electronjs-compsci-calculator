@@ -10,7 +10,7 @@ function NavBar () {
                     {/* in here we are going to have the logo + the calculator options
                     and history menu */}
                     <Link to = "/">
-                        <img src = "" alt = "logo image"></img>
+                        <img src = {null} alt = "logo image"></img>
                     </Link>
                     <button> Basic </button>
                     <button> Scientific </button>

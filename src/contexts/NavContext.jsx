@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffectEvent } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 const NavContext = createContext()
 export const useNavContext = () => useContext(NavContext)
 
@@ -19,4 +19,12 @@ export const NavProvider = ({children}) => {
             setType(newType)
         }
     }
+
+    const value = {
+        type,
+        typeSetter
+    }
+    return (<NavContext.Provider value = {value}>
+        {children}
+    </NavContext.Provider>)
 }

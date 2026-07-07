@@ -4,17 +4,20 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './css/App.css'
 import NavBar from './components/NavBar'
-
+import Calculator from './components/Calculator'
+import { NavProvider } from './contexts/NavContext.jsx'
 function App() {
   
   return (  
     <>
-      <header>
-        <NavBar />
-      </header>
-      <main>
-
-      </main>
+      <NavProvider>
+        <header>
+          <NavBar />
+        </header>
+        <main>
+          <Calculator />
+        </main>
+      </NavProvider>
     </>
   )
 }

@@ -1,3 +1,10 @@
-main{
+body {
     background-color: #090A0F;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(90vh - 7.5rem);
 }

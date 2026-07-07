@@ -1,0 +1,17 @@
+nav{
+    /* border: 2px solid red; */
+    height: 10vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid cyan;
+    border-radius: 8px;
+    margin: 2.5rem;
+}
+
+.nav-left {
+    display: flex;
+    justify-content: space-around;
+    /* border: 2px solid green; */
+    width: 25%;
+}
