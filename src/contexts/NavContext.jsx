@@ -11,7 +11,7 @@ export const NavProvider = ({children}) => {
     }, [])
 
     useEffect (() => {
-        localStorage.setItem(JSON.stringify(type))
+        localStorage.setItem('type', JSON.stringify(type))
     }, [type])
 
     function typeSetter (newType) {
