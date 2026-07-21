@@ -3,42 +3,49 @@
 import { useState, useEffect } from "react"
 import { useNavContext } from "../contexts/NavContext"
 import "../css/Calculator.css"
-function Calculator () {
+function Calculator() {
 
-    const {type, typeSetter} = useNavContext()
+    const { type, typeSetter } = useNavContext()
     const [equation, setEquation] = useState("0")
     const handleTypedContent = (realVal) => {
         let validCheck = false
         let numCheck = true
         const val = realVal.replaceAll(" ", "")
-        console.log("val:" + val )
+        console.log("val:" + val)
         //function to check if a given character is a number
         const isNum = (x) => {
-           const nums = x === "0" || x === "1" || x === '2' || x === '3' || x === '4' || x === '5' || x === '6' || x === '7' || x === '8' || x === '9'
-           const ops = x === "+" || x === "-" || x === '*' || x === "/"
-           if (type === 'basic') {
+            const nums = x === "0" || x === "1" || x === '2' || x === '3' || x === '4' || x === '5' || x === '6' || x === '7' || x === '8' || x === '9'
+            const ops = x === "+" || x === "-" || x === '*' || x === "/"
+            if (type === 'basic') {
                 if (nums || ops) {
                     return true
-                } 
-                else{
+                }
+                else {
                     return false
                 }
-           }
+            }
+        }
+        const isOp = (x) => {
+                        if (x === '+' || x === '-' || x === '/' || x === '*'){
+                            return true
+                        } else {
+                            return false
+                        }
         }
         //loop to check whether or not the value passed contains any non numerical characters
-        for (const c of val){
+        for (const c of val) {
             if (!isNum(c)) {
                 numCheck = false
                 break
             }
         }
         //basic type checker
-        if (type === "basic"){ //!!!!come bac here to deal with negatives!!!!!
-            if ((val >= '0' && val <= '9') || (val === '/' || val === '*' || val === '+' || val === '-')){
-                validCheck = true //THIS NEEDS FIXING!!!!!
-            }
-            if (validCheck && numCheck){
-                if (equation === "0"){ //equation here is the previous one before being updated with the current input
+        if (type === "basic") { //!!!!come bac here to deal with negatives!!!!!
+            // if ((val[val.length - 1] >= '0' && val[val.length - 1] <= '9') || (val[val.length - 1] === '/' || val[val.length - 1] === '*' || val[val.length - 1] === '+' || val[val.length - 1] === '-')){
+            //     validCheck = true //THIS NEEDS FIXING!!!!!
+            // }
+            if (numCheck) {
+                if (equation === "0") { //equation here is the previous one before being updated with the current input
                     // for (const c of val){
                     //     if (c != "0") cleanedVal += c //cleans leading 0s to make input looking clean
                     // }
@@ -48,7 +55,6 @@ function Calculator () {
                         passed to it. So this equation === '0' check literally only runs once. and it runs only when there are 2 
                         characters. it gets a lil fuzzy if you enter 0 as your second character, but we can handle that later
                     */
-
                     const lastVal = val[1]
                     let cleanedVal = ""
                     if (lastVal === '+' || lastVal === '-' || lastVal === '/' || lastVal === '*') {
@@ -57,8 +63,18 @@ function Calculator () {
                         cleanedVal = lastVal
                     }
                     setEquation(cleanedVal)
-                }else {
-                    setEquation(val)
+                } else {
+                    //first let's check if the latest char that got fired is an operator
+                    let clearedVal = ""
+                    
+                    for (const char of val) {
+                        if (isOp(char)) {
+                            clearedVal += " " + char + " "
+                        } else {
+                            clearedVal += char
+                        }
+                    }
+                    setEquation(clearedVal)
                 }
                 console.log(equation)
                 /* the input box is already saving the previous content. so we don't actually need to account for it
@@ -66,8 +82,8 @@ function Calculator () {
                 create a bit of a continuity issue with the actual equation variable, as for some reason it is printing 
                 the previous equation in the console.log line, but it is what it is */
             }
-            else{
-                setEquation (equation)
+            else {
+                setEquation(equation) //does nothing here basically, just a pass for structure sake
             }
         }
     }
@@ -75,24 +91,45 @@ function Calculator () {
     const calculateResult = () => {
         /* We have to parse the equation var here and break it into a list, to make it easier to access things
             1. we have to make sure that the string being passed through has some blank space between stuff already to make it easier to parse
-
-
+            2. to do this, we can just use realVal instead of Val
+            3. create new array, and use it to order everything in the order that you would actually
+               process the bedmas
+            4. so then you can run one loop and parse the entire ting in one go
+            5. use stackkkk, or you can use recursion, but im scared of overflow
         */
+
+        if (type === 'basic') {
+            const splitArr = realVar.split(' ') //so now you should have an array with all the
+                                                //numbers and operators separate... here is where
+                                                //the fun begins, because we have to work on the
+                                                //BEDMAS, to make sure all goes well
+            //3 + 2 * 5 - 4
+
+            // let's try recursively
+            const solver = (arr) => {
+                //base case
+                if (arr.length === 1) {
+                    return arr[0]
+                } else {
+                    //check for division and multiplication first
+                }
+            }
+        }
     }
-    
+
     return (
         <>
             <div className="calc-content">
                 {/*the input screen will go right here */}
                 <div className="calc-input-screen">
-                    <input type = "text" 
-                           value = {equation} 
-                           onChange = {(e) => handleTypedContent(e.target.value)}
-                           onKeyDown={ (e) => {
+                    <input type="text"
+                        value={equation}
+                        onChange={(e) => handleTypedContent(e.target.value)}
+                        onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                                 calculateResult()
                             }
-                           }}></input>
+                        }}></input>
                 </div>
                 <div className="calc-board">
 
